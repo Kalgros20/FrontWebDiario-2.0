@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import SideMenu from '../../components/sideMenu/SideMenu';
-import { Grid, Row, Col, Form, FormControl, FormGroup, PageHeader, Button, Glyphicon, Modal, ControlLabel } from 'react-bootstrap';
+import { Grid, Row, Col, FormControl, FormGroup, PageHeader, Button, Glyphicon, Modal, ControlLabel, Form } from 'react-bootstrap';
 import Input from '../../components/input/Input';
 import TableOcurrence from '../../components/tables/TableOcurrence';
-import ModalCustom from '../../components/modal/ModalCustom';
 import $ from 'jquery';
 import PubSub from 'pubsub-js';
 
@@ -20,6 +19,10 @@ class Occurrence extends Component {
   }
   handleHide() {
     this.setState({ show: false });
+  }
+  removeRow(event) {
+    event.preventDefault();
+    console.log("Eoq");
   }
   setTitle(evento) {
     this.setState({ title: evento.target.value });
@@ -69,8 +72,23 @@ class Occurrence extends Component {
       }
     });
 
+    PubSub.subscribe("remove-item", function (topic, rowId) {
+      $.ajax({
+        url: 'http://localhost:8000/api/occurrence/' + rowId,
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'delete',
+        success: function (response) {
+          PubSub.publish("update-list-occurrence", response);
+        },
+        error: function () {
 
-    PubSub.subscribe("update-list-occurrence", function (topico, newList) {
+        }
+      });
+    });
+
+
+    PubSub.subscribe("update-list-occurrence", function (topic, newList) {
       $.ajax({
         url: 'http://localhost:8000/api/occurrence',
         contentType: 'application/json',
@@ -90,76 +108,72 @@ class Occurrence extends Component {
 
   render() {
     return (
-      <div>
-        <SideMenu />
-        <Grid>
-          <Row>
-            <PageHeader bsClass="text-center">
-              Cadastro de Ocorrencia
-            </PageHeader>
-          </Row>
-          <Row>
-            <Col md={4} mdOffset={4}>
-              <form>
-                <FormGroup controlId="formInlineName">
-                  <Input type="text" id="occurrence" className="form-control" placeholder="Pesquisar" onChange={this.setActor} />
-                </FormGroup>{'   '}
-                <Button bsSize="small" type="submit">
-                  <Glyphicon glyph="search" /> Pesquisa
+      <Grid>
+        <Row>
+          <SideMenu />
+          <PageHeader bsClass="text-center">
+            Cadastro de Ocorrencia
+          </PageHeader>
+        </Row>
+        <Row>
+          <Col md={4} mdOffset={4}>
+            <Form inline>
+              <FormGroup controlId="formInlineName">
+                <Input type="text" id="occurrence" className="form-control" placeholder="Pesquisar" onChange={this.setActor} />
+              </FormGroup>{'   '}
+              <Button bsSize="small" type="submit">
+                <Glyphicon glyph="search" /> Pesquisa
               </Button>{'   '}
-              </form>
-            </Col>
-          </Row>
-          <br />
-          <Row>
-            <TableOcurrence list={this.state.list} />
-          </Row>
-          <Row>
-            <Col md={2} mdOffset={5}>
-              <Button
-                bsStyle="primary"
-                bsSize="large"
-                onClick={() => this.setState({ show: true })}
-                type="button"
-              >
-                Adicionar nova Ocorrencia
+            </Form>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <TableOcurrence list={this.state.list} />
+        </Row>
+        <Row>
+          <center>
+            <Button
+              Button bsStyle="primary" bsSize="large"
+              onClick={() => this.setState({ show: true })}
+              type="button"
+            >
+              Cadastrar Ocorrencia
             </Button>
-              <div className="modal-container" style={{ height: 200 }}>
-                <Modal
-                  show={this.state.show}
-                  onHide={this.handleHide}
-                  container={this}
-                  aria-labelledby="contained-modal-title"
-                >
-                  <Modal.Body>
-                    <form method="post" onSubmit={this.sendForm}>
-                      <FormGroup>
-                        <ControlLabel>Titulo:</ControlLabel> <Input type="text" className="form-control" onChange={this.setTitle} value={this.state.title} id="title" name="title" />
-                      </FormGroup>
-                      <FormGroup>
-                        <ControlLabel>Autor:</ControlLabel> <Input type="text" className="form-control" onChange={this.setActor} value={this.state.actor} id="actor" name="actor" />
-                      </FormGroup>
-                      <FormGroup>
-                        <ControlLabel>Relator:</ControlLabel> <Input type="text" className="form-control" onChange={this.setWriter} value={this.state.writer} id="writer" name="writer" />
-                      </FormGroup>
+          </center>
+        </Row>
+        <div className="modal-container" style={{ height: 200 }}>
+          <Modal
+            show={this.state.show}
+            onHide={this.handleHide}
+            container={this}
+            aria-labelledby="contained-modal-title"
+          >
+            <Modal.Body>
+              <form method="post" onSubmit={this.sendForm}>
+                <FormGroup>
+                  <ControlLabel>Titulo:</ControlLabel> <Input type="text" className="form-control" onChange={this.setTitle} value={this.state.title} id="title" name="title" />
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Autor:</ControlLabel> <Input type="text" className="form-control" onChange={this.setActor} value={this.state.actor} id="actor" name="actor" />
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Relator:</ControlLabel> <Input type="text" className="form-control" onChange={this.setWriter} value={this.state.writer} id="writer" name="writer" />
+                </FormGroup>
 
-                      <FormGroup controlId="formControlsTextarea">
-                        <ControlLabel>Descrição:</ControlLabel>
-                        <FormControl componentClass="textarea" placeholder="textarea" onChange={this.setDescription} value={this.state.description} id="description" name="description" />
-                      </FormGroup>
-                      <Modal.Footer>
-                        <Button type="submit">Salvar</Button>
-                        <Button onClick={this.handleHide}>Fechar</Button>
-                      </Modal.Footer>
-                    </form>
-                  </Modal.Body>
-
-                </Modal>
-              </div>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+                <FormGroup controlId="formControlsTextarea">
+                  <ControlLabel>Descrição:</ControlLabel>
+                  <FormControl componentClass="textarea" placeholder="textarea" onChange={this.setDescription} value={this.state.description} id="description" name="description" />
+                </FormGroup>
+                <Modal.Footer>
+                  <Button bsStyle="success">Salvar</Button>
+                  <Button onClick={this.handleHide}>Fechar</Button>
+                </Modal.Footer>
+              </form>
+            </Modal.Body>
+          </Modal>
+        </div>
+      </Grid>
     );
   }
 }

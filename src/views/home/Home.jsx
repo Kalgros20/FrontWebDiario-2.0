@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col, Jumbotron, Button } from 'react-bootstrap';
+import { Grid, Row, Jumbotron, Button } from 'react-bootstrap';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import SideMenu from '../../components/sideMenu/SideMenu';

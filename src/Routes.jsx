@@ -5,7 +5,7 @@ import Home from './views/home/Home';
 import Teste from './views/teste/Teste';
 import Semester from './views/register/Semester';
 import Occurrence from './views/register/Ocurrence';
-
+import Calendary from './views/calendary/Calendary';
 class Routes extends Component {
 
     render() {
@@ -17,6 +17,7 @@ class Routes extends Component {
                 <Route path="/teste" component={Teste} />
                 <Route path="/register/semester" component={Semester}/>
                 <Route path="/register/occurrence" component={Occurrence}/>
+                <Route path="/calendario" component={Calendary}/>
                 <Route path="/teste" component={Teste} />
             </Switch>
         );

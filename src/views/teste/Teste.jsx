@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Jumbotron, Button } from 'react-bootstrap';
+import { Grid, Row, Jumbotron } from 'react-bootstrap';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideMenu from '../../components/sideMenu/SideMenu';
 import Stateless from '../../components/stateLess/Stateless';
@@ -18,7 +18,7 @@ class Teste extends Component {
     } = this.state;
 
     let newNumber = number + 1;
-    if (action == 'min') newNumber = number - 1;
+    if (action === 'min') newNumber = number - 1;
 
     this.setState({
       number: newNumber,

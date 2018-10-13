@@ -1,3 +1,5 @@
+
+
 .sideBarMenuContainer {
     position: fixed;
     height: 100%;
@@ -86,7 +88,8 @@ nav.sidebar {
     /*gives sidebar width/height*/
     nav.sidebar {
         width: 200px;
-        height: 100%;
+        height: 100% !important;
+        min-height: 100% !important;
         margin-left: -160px;
         float: left;
         z-index: 8000;

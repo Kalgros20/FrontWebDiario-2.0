@@ -11,7 +11,7 @@ export default class Login extends Component {
               <FormGroup controlId="formHorizontalEmail">
                 <Col componentClass={ControlLabel} sm={2}>
                   Prontuário:
-                                 </Col>
+                </Col>
                 <Col sm={10}>
                   <FormControl type="prontuario" placeholder="GU" />
                 </Col>
