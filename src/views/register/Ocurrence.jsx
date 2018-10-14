@@ -20,10 +20,6 @@ class Occurrence extends Component {
   handleHide() {
     this.setState({ show: false });
   }
-  removeRow(event) {
-    event.preventDefault();
-    console.log("Eoq");
-  }
   setTitle(evento) {
     this.setState({ title: evento.target.value });
   }
@@ -129,16 +125,18 @@ class Occurrence extends Component {
         </Row>
         <br />
         <Row>
+        <Col md={10} mdOffset={1}>
           <TableOcurrence list={this.state.list} />
+        </Col>
         </Row>
         <Row>
           <center>
             <Button
-              Button bsStyle="primary" bsSize="large"
+              bsStyle="primary" bsSize="large"
               onClick={() => this.setState({ show: true })}
               type="button"
-            >
-              Cadastrar Ocorrencia
+            ><Glyphicon glyph="plus" />{' '}
+              Nova Ocorrencia
             </Button>
           </center>
         </Row>
@@ -166,7 +164,7 @@ class Occurrence extends Component {
                   <FormControl componentClass="textarea" placeholder="textarea" onChange={this.setDescription} value={this.state.description} id="description" name="description" />
                 </FormGroup>
                 <Modal.Footer>
-                  <Button bsStyle="success">Salvar</Button>
+                  <Button bsStyle="success" type="submit">Salvar</Button>
                   <Button onClick={this.handleHide}>Fechar</Button>
                 </Modal.Footer>
               </form>

@@ -15,11 +15,11 @@ export default class TableOcurrence extends Component {
       <Table striped bordered condensed hover>
         <thead>
           <tr>
-            <th className="text-center">Titulo</th>
-            <th className="text-center">Ator</th>
-            <th className="text-center">Relator</th>
-            <th className="text-center">Data</th>
-            <th></th>
+            <th>Titulo</th>
+            <th >Ator</th>
+            <th >Relator</th>
+            <th >Data</th>
+            <th className="text-center">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -31,14 +31,15 @@ export default class TableOcurrence extends Component {
               createdData = createdData.replace(/-/g, '/');
               return (
                 <tr key={row.id}>
-                  <td className="text-center">{row.title}</td>
-                  <td className="text-center">{row.responsible}</td>
-                  <td className="text-center">{row.professor}</td>
-                  <td className="text-center">{createdData}</td>
+                  <td >{row.title}</td>
+                  <td >{row.responsible}</td>
+                  <td >{row.professor}</td>
+                  <td >{createdData}</td>
                   <td className="text-center">
                     <Button bsSize="xsmall" onClick={function(){
                         history.push("/register/occurrence/" + row.id);
                     }}>
+                    Editar{' '}
                       <Glyphicon glyph="edit" />
                     </Button>{' '}
 
@@ -46,10 +47,9 @@ export default class TableOcurrence extends Component {
                       PubSub.publish("remove-item", row.id);
                       console.log("Disparando Evento para remover item");
                     }}>
+                    Remover{' '}
                       <Glyphicon glyph="remove" />
                     </Button>
-
-
                   </td>
                 </tr>
               );
